@@ -1,0 +1,65 @@
+body  {
+color: #0A1929;
+background-color: #0A1929;
+}
+
+.profile {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  width: 50rem;
+  margin: auto;
+  padding-top: 22px;
+  margin-top: 50px;
+}
+
+.p {
+    position: fixed;
+    z-index: 1;
+    background: #fff;
+    width: 50rem;
+   
+    padding-top: 30px;
+}
+
+.p img{
+ border-radius: 100px;
+}
+
+.profile .bar {
+  text-transform: capitalize;
+  position: relative;
+  top: -30px;
+}
+
+.profile-bio {
+  margin: 20px 0;
+  font-size: 0.9rem;
+  padding: 1px 30px;
+}
+
+.profile .dp {
+  width: 150px;
+  height: 150px;
+  margin-right: 4rem;
+  margin-left: 1rem;
+  margin-top: 1rem;
+}
+.dp-skeleton {
+  /* width: 250px;
+  height: 250px; */
+  padding: 60px;
+  margin-right: 4rem;
+  margin-left: 2rem;
+  margin-top: 1rem;
+  border-radius: 50%;
+}
+.profile-status {
+  margin-top: 20px;
+}
+
+.profile-status h4 {
+  margin-right: 10px;
+}
+
+.profile .status {
+  padding: 15px;
+}
