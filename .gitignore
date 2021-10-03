@@ -5,13 +5,13 @@
 /.pnp
 .pnp.js
 
-./backend/accounts/__pycache_
-./backend/accounts/migrations/__pycache_
+./backend/accounts/__pycache__
+./backend/accounts/migrations/__pycache__
 
-./backend/posts/migrations/__pycache_
-./backend/posts/__pycache_
+./backend/posts/migrations/__pycache_-
+./backend/posts/__pycache__
 
-./backend/weebee/__pycache_
+./backend/weebee/__pycache__
 
 # testing
 /coverage
