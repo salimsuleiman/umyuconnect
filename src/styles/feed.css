@@ -2,10 +2,19 @@
   box-sizing: border-box;
 }
 body {
-  background: #fcfcfc;
+  background: #f0efef;
   color: #1b1f24;
 }
 
+
+.banner {
+  position: absolute;
+  right: 590px;
+  color: #fcfafa;
+  font-size: 7rem;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  background-color: transparent;
+}
 .feed-container {
   padding: 0px 0 0 0;
   width: 40rem;
@@ -21,12 +30,13 @@ textarea:active {
 }
 
 .tweetBox {
-  border: 1px solid #eff1f1;
+  border: 1px solid #f7f5f5;
+  border-top-color: #fcfcfc;
   padding-bottom: 10px;
   padding-right: 10px;
   background-color: #fff;
   margin-bottom: 8px;
-  margin-top: -15px;
+  margin-top: -40px;
 }
 
 .tweetBox:hover {

@@ -1,47 +1,60 @@
 import React from "react";
-import { Redirect, useHistory, useParams } from "react-router-dom";
-import { useState, useLayoutEffect } from "react";
+import { useHistory, useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
 import axios from "axios";
-import { BASEURL, ADDCOMMENT } from "../privates";
+import { ADDCOMMENT } from "../privates";
 import Post from "../components/Post";
 import PostSkeleton from "../components/PostSkeleton";
 import Comment from "../components/Comment";
 import Header from "../components/Header";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import Fab from "@mui/material/Fab";
-import AddIcon from "@mui/icons-material/Add";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
+import { useContext } from "react";
+import { AuthContext, PostsContext } from "../contexts";
+import LinearProgress from "@mui/material/LinearProgress";
 
-// axios.defaults.baseURL = BASEURL;
+function PostDetail() {
+  let history = useHistory();
+  const { postID } = useParams();
 
-function PostDetail({ auth, setPosts, setAuth }) {
+  const { setAuth, auth } = useContext(AuthContext);
+  const { posts, setPosts } = useContext(PostsContext);
+
   const [commentText, setCommentText] = useState("");
-  const [post, setPost] = useState(null);
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  const [post, setPost] = useState(null);
   const HandleCommentSubmit = async (postId) => {
     setLoading(true);
     try {
       let response = await ADDCOMMENT(postId, commentText);
       setComments([response.data, ...comments]);
       setLoading(false);
-      setCommentText('')
+      setCommentText("");
     } catch (error) {
       alert(error);
     }
   };
 
-  let history = useHistory();
-  const { postID } = useParams();
-
-  useLayoutEffect(() => {
+  useEffect(() => {
     const GETPOST = async () => {
-      let response = await axios.get(`/posts/${postID}`);
-      setComments(response.data.comments.reverse());
-      setPost(response.data);
+      try {
+        let response = await axios.get(`/posts/${postID}`);
+        console.log(response);
+        setComments(response.data.comments.reverse());
+        setPost(response.data);
+      } catch (error) {
+        if (error.response.status == 404) {
+          console.log(error.response);
+          alert("post is not found");
+          history.push("");
+        } else {
+          alert(error);
+        }
+      }
     };
     GETPOST();
   }, []);
@@ -56,9 +69,11 @@ function PostDetail({ auth, setPosts, setAuth }) {
         ) : (
           <>
             <Post
+              posts={posts}
+              setPosts={setPosts}
               post={post}
               setAuth={setAuth}
-              setPosts={setPosts}
+              setPost={setPost}
               auth={auth}
             />
             {auth.user ? (
@@ -92,12 +107,24 @@ function PostDetail({ auth, setPosts, setAuth }) {
                 </Box>
               </Box>
             ) : (
-              
-               <p style={{ textAlign: "left", color: "gray", margin: '8px auto', fontSize: "0.8rem" }}>
-               <a style={{ textDecoration: 'none', color: "gray", }} href='/login'>  please login to post a comment</a>
+              <p
+                style={{
+                  textAlign: "left",
+                  color: "gray",
+                  margin: "8px auto",
+                  fontSize: "0.8rem",
+                }}
+              >
+                <a
+                  style={{ textDecoration: "none", color: "gray" }}
+                  href="/login"
+                >
+                  {" "}
+                  please login to post a comment
+                </a>
               </p>
             )}
-           
+
             {loading ? (
               <Box style={{ display: "flex" }}>
                 <CircularProgress
@@ -105,7 +132,7 @@ function PostDetail({ auth, setPosts, setAuth }) {
                 />
               </Box>
             ) : null}
-             <p>{comments?.length} Comments</p>
+            <p>{comments?.length} Comments</p>
             {comments.map((comment) => {
               return (
                 <Comment setPost={setPost} post={post} comment={comment} />

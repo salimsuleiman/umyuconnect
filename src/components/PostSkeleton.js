@@ -1,53 +1,55 @@
-import React from "react";
-import { AiOutlineHeart } from "react-icons/ai";
-import { FaRegComment } from "react-icons/fa";
+import * as React from "react";
+import PropTypes from "prop-types";
+import Card from "@mui/material/Card";
+import CardHeader from "@mui/material/CardHeader";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import Avatar from "@mui/material/Avatar";
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import Skeleton from "@mui/material/Skeleton";
 
-const PostSkeleton = () => {
+import Box from '@mui/material/Box';
+
+
+
+
+function Media(props) {
   return (
-    <div className="post not-hover">
-      <div style={{position: 'relative', left: '0px'}}className="post-head">
-        <span
-          style={{ height: "50px", width: "50px" }}
-          className="round-image post-user-profileimage animated-bg"
-        >
-          &nbsp;
-        </span>
+    <Card sx={{  ml: -7, border: 'none', borderShadow: 'none', boxShadow: 'none' }}>
+      <CardHeader
+        avatar={
+          <Skeleton
+            animation="wave"
+            variant="circular"
+            width={60}
+            height={60}
+          />
+        }
+        title={
+          <Skeleton
+            animation="wave"
+            height={20}
+            width="80%"
+            style={{ marginBottom: 6 }}
+          />
+        }
+        subheader={<Skeleton animation="wave" height={20} width="40%" />}
+      />
+       <CardContent>
+       <Skeleton />
+      <Skeleton animation="wave" />
+      </CardContent>
+    </Card>
+  );
+}
 
-        <div style={{ top: "27px", width: "100px" }} className="bar">
-          {/* <a className="animated-bg" href="/salim/">
-            <span style={{ width: "100px",  marginBottom: "5px" }}  className="in-bc">&nbsp;</span>
-          </a> */}
-
-          <span style={{marginBottom: "5px" }} className="in-b animated-bg">
-            &nbsp;
-          </span>
-          <span style={{ }} className="in-b animated-bg">
-            &nbsp;
-          </span>
-
-        </div>
-      </div>
-      <div className="post-body">
-        <p style={{ marginBottom: "10px" }} className="animated-bg animated-bg-text">
-          &nbsp;
-        </p>
-        <p className="animated-bg animated-bg-text">&nbsp;</p>
-        <div className="post-footer">
-          <ul>
-            <li className="in-bc" title="Like">
-              <AiOutlineHeart color="#dfe0e1" />
-              <span style={{ paddingLeft: "20px" }} className="post-status-count animated-bg">&nbsp;</span>
-            </li>
-
-            <li className="in-bc" title="comment">
-              <FaRegComment color="#dfe0e1" />
-              <span  style={{ paddingLeft: "20px" }} className="post-status-count animated-bg">&nbsp;</span>
-            </li>
-          </ul>
-        </div>
-      </div>
+export default function Facebook() {
+  return (
+    <div>
+      <Media />
+     
     </div>
   );
-};
-
-export default PostSkeleton;
+}

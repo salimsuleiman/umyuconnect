@@ -43,7 +43,7 @@ def GetPost(request, postID):
     return Response(serializer.data)
 
 
-@api_view(['PUT'])
+@api_view(['POST'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def LikePost(request, id):
@@ -52,20 +52,54 @@ def LikePost(request, id):
     except Post.DoesNotExist:
         return Response({'detail': 'post does not exist'}, 404)
     
-    
-    post.likes.add(author=request.user)
-    post.save()
+    if request.user in post.likes.all():
+        post.likes.remove(request.user)
+        return Response({'datail': 'you have liked already, but its unliked now'}, 300)
+    else: 
+        post.likes.add(request.user)
+        return Response({'datail': 'you are now liked'}, 200)
 
-    serializer = UserSerializer(request.user, many=False)
-    return Response(serializer.data, 200)
+    # serializer = PostSerializer(post, many=False)
+    # return Response(serializer.data, 200)
 
 
+@api_view(['DELETE'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def DeletePost(request, postID):
+    try:
+        post = Post.objects.get(pk=postID)
+    except Post.DoesNotExist:
+        return Response({'details': 'not post found'})
+    if request.user ==  post.author:
+        post.delete()
+        return Response({'Detail': 'post successfully deleted'})
+    else:
+        return Response({'Detail': 'this post does not belongs to this user'}, 404)
 
-def DeletePost(request):
+
+@api_view(['PUT'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def EditPost(request, postID):
+    try:
+        post = Post.objects.get(pk=postID)
+    except Post.DoesNotExist:
+        return Response({'details': 'not post found'}, 404)
+
+    if request.user == post.author:
+        print(post)
+        post.text = request.data['text']
+        post.save()
+        return Response({'detail': 'post successfully update'})
+    else:
+        return Response({'Detail': 'this post does not belongs to this user'}, 404)
+
+
+   
+    return Response
+
     ...
-def EditPost(request):
-    ...
-
 @api_view(['POST'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])

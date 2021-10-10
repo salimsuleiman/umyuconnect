@@ -1,17 +1,12 @@
 import React from "react";
 import Avatar from "@mui/material/Avatar";
-import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
-import TimeAgo from "javascript-time-ago";
 import ReactTimeAgo from "react-time-ago";
 
-import unknown_dp from "../images/unknown_dp.jpeg";
 import { BASEURL } from "../privates";
 import { FaCheckCircle } from "react-icons/fa";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import { SpaOutlined } from "@mui/icons-material";
+
 
 
 

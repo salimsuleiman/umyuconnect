@@ -1,8 +1,12 @@
 import Login from "../components/Login";
 import umyukLogo from "../images/download.jpeg";
+import { useEffect } from "react";
+import {useContext} from "react";
+import { AuthContext, PostsContext } from "../contexts";
 
-
-const Home = ({auth, setAuth}) => {
+const Home = () => {
+  const { setAuth, auth } = useContext(AuthContext)
+  const { posts, setPosts } = useContext(PostsContext)
   return (
     <>
       {/* <div className="split brand">

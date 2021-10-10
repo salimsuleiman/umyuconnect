@@ -6,7 +6,6 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
-import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
@@ -16,11 +15,10 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Alert from "@mui/material/Alert";
 import Stack from "@mui/material/Stack";
+import Box from "@mui/material/Box";
 import LinearProgress from "@mui/material/LinearProgress";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
-
-axios.defaults.baseURL = BASEURL;
 
 function Copyright(props) {
   return (
@@ -47,12 +45,12 @@ export default function Login({ auth, setAuth }) {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   let history = useHistory();
   const HandleSubmit = async (e) => {
-    setOpen(true)
-    setLoading(true);
+    setOpen(true);
+
     e.preventDefault();
     try {
       let response = await LOGINUSER(username, password);
@@ -63,32 +61,31 @@ export default function Login({ auth, setAuth }) {
         user: response.user,
         token: response.token,
       });
-      setLoading(false);
+      setOpen(false);
       history.push("/");
     } catch (error) {
       setMessage("wrong credentials - please try again");
-      setTimeout(() => setMessage(""), 2000);
+      setOpen(false)
+      setTimeout(() => setMessage(""), 3000);
     }
   };
 
   return (
     <ThemeProvider theme={theme}>
-      {loading ? (
+      {open ? (
         <>
           <Box sx={{ width: "100%" }}>
             <LinearProgress />
           </Box>
-
-        
         </>
       ) : null}
       <Grid container component="main" sx={{ height: "100vh" }}>
-       <Backdrop
-            sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-            open={open}
-            onClick={() => setOpen(false)}
-          >
-            <CircularProgress color="inherit" />
+        <Backdrop
+          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={open}
+          onClick={() => setOpen(false)}
+        >
+          <CircularProgress color="inherit" />
         </Backdrop>
         <CssBaseline />
         <Grid
@@ -97,8 +94,10 @@ export default function Login({ auth, setAuth }) {
           sm={4}
           md={7}
           sx={{
-            backgroundImage: "url(https://cdn.cms-twdigitalassets.com/content/dam/blog-twitter/official/en_us/company/2021/imperfect-by-design/header-darker.jpg.img.fullhd.medium.jpg)",
+            backgroundImage:
+              "url(https://cdn.cms-twdigitalassets.com/content/dam/blog-twitter/official/en_us/company/2021/imperfect-by-design/header-darker.jpg.img.fullhd.medium.jpg)",
             backgroundRepeat: "no-repeat",
+
             backgroundColor: (t) =>
               t.palette.mode === "light"
                 ? t.palette.grey[50]
@@ -107,6 +106,13 @@ export default function Login({ auth, setAuth }) {
             backgroundPosition: "center",
           }}
         />
+        <Typography xs={12} sm={8} md={5}>
+          <h1 class="banner">
+            Bring Umyu <br />
+            Together
+          </h1>
+        </Typography>
+
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
           <Box
             sx={{
@@ -117,9 +123,6 @@ export default function Login({ auth, setAuth }) {
               alignItems: "center",
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-              {/* <LockOutlinedIcon /> */}
-            </Avatar>
             <Typography component="h1" variant="h5">
               Sign in
             </Typography>

@@ -10,12 +10,14 @@ import unknown_dp from "../images/unknown_dp.jpeg";
 import { Redirect, useHistory } from "react-router-dom";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import Button from "@mui/material/Button";
+import { useEffect } from "react";
+import { useContext } from "react";
+import { AuthContext, PostsContext } from "../contexts";
 
-const Profile = ({ auth, setAuth }) => {
+const Profile = () => {
   let history = useHistory();
-
   const { username } = useParams();
-
+  const { setAuth, auth } = useContext(AuthContext);
   const [user, setUser] = useState(null);
   const [posts, setPosts] = useState(null);
   const [found, setFound] = useState(true);
@@ -51,7 +53,7 @@ const Profile = ({ auth, setAuth }) => {
           {found == false ? (
             <Redirect to="/" />
           ) : (
-            <div className="p" style={{backgroundColor: '#FAFAFA'}}>
+            <div className="p" style={{ backgroundColor: "#FAFAFA" }}>
               <img
                 src={
                   user.profile_picture === null
@@ -102,13 +104,11 @@ const Profile = ({ auth, setAuth }) => {
             </div>
           )}
 
-          <div style={{ marginTop: "290px"}}>
+          <div style={{ marginTop: "290px" }}>
             {found
               ? user.posts.map((post) => {
                   return (
                     <Post
-                      auth={auth}
-                      setAuth={setAuth}
                       setPosts={setPosts}
                       posts={posts}
                       key={post.id}

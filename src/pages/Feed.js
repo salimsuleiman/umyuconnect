@@ -2,8 +2,13 @@ import Posts from "../components/Posts";
 import Header from "../components/Header";
 import PostCreateArea from "../components/PostCreateArea";
 import Menu from "@mui/material/Menu";
+import { useContext } from "react";
+import { AuthContext, PostsContext } from "../contexts";
 
-const Feed = ({ auth, setAuth, posts, setPosts }) => {
+const Feed = () => {
+  const { setAuth, auth } = useContext(AuthContext);
+  const { posts, setPosts } = useContext(PostsContext);
+
   return (
     <>
       <Header auth={auth} setAuth={setAuth} />
@@ -16,7 +21,7 @@ const Feed = ({ auth, setAuth, posts, setPosts }) => {
             style={{
               textAlign: "left",
               color: "gray",
-              margin: "0px auto",
+              margin: "5px auto",
               fontSize: "0.8rem",
             }}
           >
@@ -31,7 +36,6 @@ const Feed = ({ auth, setAuth, posts, setPosts }) => {
           <Posts
             auth={auth}
             setAuth={setAuth}
-            Feedposts={posts}
             posts={posts}
             setPosts={setPosts}
           />

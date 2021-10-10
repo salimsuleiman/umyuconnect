@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 import Avatar from "@mui/material/Avatar";
 import CircularProgress from "@mui/material/CircularProgress";
 
-axios.defaults.baseURL = BASEURL;
+// axios.defaults.baseURL = BASEURL;
 
 const PostCreateArea = ({ auth, setPosts, posts }) => {
   const [text, setText] = useState("");

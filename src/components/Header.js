@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState } from "react";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
@@ -20,7 +20,7 @@ import BugReportIcon from "@mui/icons-material/BugReport";
 import Avatar from "@mui/material/Avatar";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import InfoIcon from "@mui/icons-material/Info";
-import LoginIcon from '@mui/icons-material/Login';
+import LoginIcon from "@mui/icons-material/Login";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import { INITIALAUTH, BASEURL, LOGOUTUSER } from "../privates";
@@ -28,74 +28,28 @@ import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import LinearProgress from "@mui/material/LinearProgress";
 import Link from "@mui/material/Link";
-import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
+import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
+import { useContext } from "react";
+import { AuthContext } from "../contexts";
 const drawerWidth = 240;
 
-const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
-  ({ theme, open }) => ({
-    flexGrow: 1,
-    padding: theme.spacing(3),
-    transition: theme.transitions.create("margin", {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    marginLeft: `-${drawerWidth}px`,
-    ...(open && {
-      transition: theme.transitions.create("margin", {
-        easing: theme.transitions.easing.easeOut,
-        duration: theme.transitions.duration.enteringScreen,
-      }),
-      marginLeft: 0,
-    }),
-  })
-);
-
-const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== "open",
-})(({ theme, open }) => ({
-  transition: theme.transitions.create(["margin", "width"], {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  ...(open && {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: `${drawerWidth}px`,
-    transition: theme.transitions.create(["margin", "width"], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  }),
-}));
-
-const DrawerHeader = styled("div")(({ theme }) => ({
-  display: "flex",
-  alignItems: "center",
-  padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
-  ...theme.mixins.toolbar,
-  justifyContent: "flex-end",
-}));
-
-export default function PersistentDrawerLeft({ auth, setAuth }) {
+export default function Header() {
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
-  const [open2, setOpen2] = React.useState(false);
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [open, setOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const { setAuth, auth } = useContext(AuthContext);
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
   const HandleLogout = async () => {
-    setOpen2(true);
     setOpen(true);
+    setLoading(true);
     let response = await LOGOUTUSER();
     setAuth(INITIALAUTH);
-    setOpen2(false);
+    setLoading(!true);
     setOpen(false);
   };
 
@@ -111,18 +65,17 @@ export default function PersistentDrawerLeft({ auth, setAuth }) {
     <Box sx={{ display: "flex" }}>
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={open2}
-        // onClick={handleClose}
+        open={loading}
       >
         <CircularProgress color="inherit" />
       </Backdrop>
       <CssBaseline />
       <AppBar
-        style={{ backgroundColor: "#e1465e" }}
+        style={{ backgroundColor: "#1D87D0", padding: "-50px" }}
         position="fixed"
         open={open}
       >
-        {open2 ? (
+        {loading ? (
           <>
             <Box sx={{ width: "100%" }}>
               <LinearProgress />
@@ -147,9 +100,11 @@ export default function PersistentDrawerLeft({ auth, setAuth }) {
             <a
               href="/"
               style={{
-                color: "#fff",
+                color: "#EFEFEF",
                 textDecoration: "none",
-                fontWeight: "400px",
+                fontWeight: "bold",
+                fontSize: "1.3rem",
+                textTransform: "uppercase",
                 // fontStyle: "italic",
               }}
             >
@@ -174,12 +129,7 @@ export default function PersistentDrawerLeft({ auth, setAuth }) {
                 />
               </IconButton>
             </div>
-          ) : (
-            <div>
-              <a href="/signup">Signup</a>
-              <a href="/login">Login</a>
-            </div>
-          )}
+          ) : null}
         </Toolbar>
       </AppBar>
       <Drawer
@@ -308,3 +258,48 @@ export default function PersistentDrawerLeft({ auth, setAuth }) {
     </Box>
   );
 }
+
+const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
+  ({ theme, open }) => ({
+    flexGrow: 1,
+    padding: theme.spacing(3),
+    transition: theme.transitions.create("margin", {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    marginLeft: `-${drawerWidth}px`,
+    ...(open && {
+      transition: theme.transitions.create("margin", {
+        easing: theme.transitions.easing.easeOut,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
+      marginLeft: 0,
+    }),
+  })
+);
+
+const AppBar = styled(MuiAppBar, {
+  shouldForwardProp: (prop) => prop !== "open",
+})(({ theme, open }) => ({
+  transition: theme.transitions.create(["margin", "width"], {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  ...(open && {
+    width: `calc(100% - ${drawerWidth}px)`,
+    marginLeft: `${drawerWidth}px`,
+    transition: theme.transitions.create(["margin", "width"], {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  }),
+}));
+
+const DrawerHeader = styled("div")(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  padding: theme.spacing(0, 1),
+  // necessary for content to be below app bar
+  ...theme.mixins.toolbar,
+  justifyContent: "flex-end",
+}));

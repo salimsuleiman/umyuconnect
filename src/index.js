@@ -1,6 +1,18 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
+import "./styles/profile.css";
+import "./styles/style.css";
+import "./styles/feed.css";
+import en from "javascript-time-ago/locale/en.json";
+import TimeAgo from "javascript-time-ago";
+import axios from "axios";
+import { BASEURL } from "./privates";
+
+axios.defaults.baseURL = BASEURL;
+
+// TimeAgo.addLocale(en);
+TimeAgo.addDefaultLocale(en);
 
 ReactDOM.render(
   <React.StrictMode>

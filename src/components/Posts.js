@@ -1,13 +1,15 @@
-import React from "react";
 import Post from "./Post";
-import { useEffect } from "react";
 import axios from "axios";
 import PostSkeleton from "./PostSkeleton";
 
-// axios.defaults.baseURL = "http://127.0.0.1:8000";
-axios.defaults.baseURL = "http://localhost:8000";
+import { useEffect } from "react";
+import {useContext} from "react";
+import { AuthContext, PostsContext } from "../contexts";
 
-const Posts = ({ posts, setPosts, setAuth, auth }) => {
+
+const Posts = () => {
+  const { setAuth, auth } = useContext(AuthContext)
+  const { posts, setPosts } = useContext(PostsContext)
   useEffect(() => {
     const getPosts = async () => {
       try {
@@ -31,11 +33,12 @@ const Posts = ({ posts, setPosts, setAuth, auth }) => {
           posts.map((post) => {
             return (
               <Post
-               
+                
                 auth={auth}
                 setAuth={setAuth}
                 setPosts={setPosts}
                 posts={posts}
+
                 key={post.id}
                 post={post}
               />
@@ -47,6 +50,7 @@ const Posts = ({ posts, setPosts, setAuth, auth }) => {
           <PostSkeleton />
         </>
       )}
+
     </div>
   );
 };
